@@ -13,3 +13,9 @@ It includes fully independent services communicating through an API Gateway and 
 - `discovery-server` – Eureka service registry
 
 All services run independently and communicate using **service discovery** and **load-balanced REST calls**.
+
+### Keycloak OAuth
+To start keycloak oauth, run the following
+```declarative
+docker run -p 8181:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin --name keycloak-dev -d quay.io/keycloak/keycloak:26.4.5 start-dev
+```
