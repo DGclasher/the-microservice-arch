@@ -31,7 +31,7 @@ public class OrderService {
         return orderLineItems;
     }
 
-    public void placeOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
         List<OrderLineItems> orderLineItems = orderRequest.getOrderLineItemsDtoList()
@@ -52,8 +52,9 @@ public class OrderService {
         boolean allProductsInStock = Arrays.stream(inventoryResponseArr).allMatch(InventoryResponse::isInStock);
         if(allProductsInStock) {
             orderRepository.save(order);
+            return "Order placed successfully";
         } else {
-            throw new IllegalArgumentException("Product is not in stock");
+            return "Product not in stock";
         }
     }
 }
