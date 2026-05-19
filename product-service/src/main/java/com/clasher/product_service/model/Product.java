@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 
 @Document(value = "product")
+// Product uses @Document because this service is built on MongoDB, not JPA.
+// So in Product.java, @Document(value = "product") marks the class as a Mongo document and maps it to the product collection.
 @Data
 @Builder
 @AllArgsConstructor
