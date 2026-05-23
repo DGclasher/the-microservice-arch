@@ -1,0 +1,19 @@
+services:
+  mysql-db:
+    container_name: micro-mysql
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - micro-mysqldb:/var/lib/mysql
+
+volumes:
+  micro-mysqldb:

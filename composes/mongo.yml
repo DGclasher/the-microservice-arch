@@ -1,0 +1,15 @@
+services:
+  mongodb:
+    container_name: micro-mongo
+    restart: unless-stopped
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=dbmongo
+    volumes:
+      - micro-mongo_data:/data/db
+volumes:
+  micro-mongo_data:
