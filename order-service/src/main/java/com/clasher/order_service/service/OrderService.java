@@ -3,10 +3,12 @@ package com.clasher.order_service.service;
 import com.clasher.order_service.dto.InventoryResponse;
 import com.clasher.order_service.dto.OrderLineItemsDto;
 import com.clasher.order_service.dto.OrderRequest;
+import com.clasher.order_service.event.OrderPlacedEvent;
 import com.clasher.order_service.model.Order;
 import com.clasher.order_service.model.OrderLineItems;
 import com.clasher.order_service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,6 +24,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto) {
         OrderLineItems orderLineItems = new OrderLineItems();
@@ -56,6 +59,7 @@ public class OrderService {
         boolean allProductsInStock = Arrays.stream(inventoryResponseArr).allMatch(InventoryResponse::isInStock);
         if(allProductsInStock) {
             orderRepository.save(order);
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
             return "Order placed successfully";
         } else {
             return "Product not in stock";
