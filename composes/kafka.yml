@@ -6,26 +6,21 @@ services:
     networks:
       - microservice_arch
     ports:
-      - "9092:9092"   # The port your Spring Boot app will use on localhost
+      - "9092:9092"
     environment:
-      # 1. Instruct this node to behave as both a message broker AND a metadata controller
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: 'broker,controller'
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@localhost:9093'
-      
-      # 2. Define the networking listeners
+
       KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
-      
-      # 3. How your Spring Boot app on your host machine will find Kafka
+
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:9092'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-      
-      # 4. KRaft specific requirement: A unique cluster ID to initialize the log storage
+
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
-      
-      # Single-node configuration overrides
+
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
