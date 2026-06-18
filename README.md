@@ -47,6 +47,28 @@ docker compose -f composes/mongo.yml down -v
 docker compose -f composes/kafka.yml down -v
 ```
 
+## Run with Docker Compose
+
+You can run the full application stack using `composes/application.yml`.
+
+First build the service Docker images with Jib:
+
+```bash
+mvn clean compile jib:dockerBuild
+```
+
+Then start the application:
+
+```bash
+docker compose -f composes/application.yml up -d
+```
+
+Stop the application:
+
+```bash
+docker compose -f composes/application.yml down
+```
+
 ## Infrastructure Defaults
 
 MySQL:
