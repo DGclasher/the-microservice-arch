@@ -23,13 +23,7 @@ The main Docker Compose file is available in the `composes` directory:
 
 - `composes/application.yml` - Starts the full application stack, including MySQL, MongoDB, Kafka, Keycloak, Zipkin, Prometheus, Grafana, Eureka, API Gateway, and the application services.
 
-Build the service Docker images from the project root:
-
-```bash
-mvn clean compile jib:dockerBuild
-```
-
-Then start the stack from the `composes` directory:
+Start the stack from the `composes` directory:
 
 ```bash
 cd composes
@@ -47,6 +41,20 @@ To stop and remove the persisted volumes as well:
 ```bash
 docker compose -f application.yml down -v
 ```
+
+If you want to build the service images locally instead of using the published images, update the target image name in the root `pom.xml` Jib configuration first:
+
+```xml
+<image>your-dockerhub-username/${project.artifactId}</image>
+```
+
+Then build the images locally:
+
+```bash
+mvn clean compile jib:dockerBuild
+```
+
+Make sure the service image names in `composes/application.yml` match the image names configured in the root `pom.xml`.
 
 ## Infrastructure Defaults
 
